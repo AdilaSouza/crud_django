@@ -7,6 +7,14 @@
 <form action="{% url 'places:upsert' %}" method="post">
     {% csrf_token %}
     <input type="text" hidden=true name="id" id="id" value="{{ place.id }}" />
-    <input type="text" name="name" id="name" value="{{ place.name }}" />
+    <p>Nome: <input type="text" name="name" id="name" value="{{ place.name }}" /></p> 
+    <p>Estado: <input type="text" name="address_state" id="address_state" value="{{ place.address_state }}" /></p>
+    <p>Cidade: <input type="text" name="address_city" id="address_city" value="{{ place.address_city }}" /></p> 
+    <p>Bairro: <input type="text" name="address_neighborhood" id="address_neighborhood" value="{{ place.address_neighborhood }}" /></p> 
+    <p>Url Imagem: <input type="text" name="image_url" id="image_url" value="{{ place.image_url }}" /></p> 
     <input type="submit" value="salvar" />
 </form>
+<a href="{% url 'places:index' %}">Voltar para Listagem</a>
+{% if place.id %}
+    <a href="{% url 'places:delete' place.id %}">Deletar registro</a>
+{% endif %}

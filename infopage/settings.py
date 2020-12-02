@@ -12,8 +12,20 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+import os
+# import django_heroku
+import dotenv
+# import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
+# this line is already in your settings.py
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# # load environment variables from .env
+# dotenv_file = os.path.join(BASE_DIR, ".env")
+# if os.path.isfile(dotenv_file):
+#     dotenv.load_dotenv(dotenv_file)
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +37,7 @@ SECRET_KEY = 'xi9c4^w#lig=g8&$#cd5+3c3)z-vg=x7!jr4xcfy#j8p-)+d_f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -42,6 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -74,12 +87,29 @@ WSGI_APPLICATION = 'infopage.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+#
+# DESESPERO KKKKK
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'df785otqidoemm',
+#         # 'NAME': os.path.join(BASE_DIR, 'mydb'),
+#         'USER': 'rsxbmnwlcrtvew',
+#         'PASSWORD': '5dad0a2e32e9bdd4cd064887f504478fc25584d9fac8214a50603e3c6e85c918',
+#         'HOST': 'ec2-54-147-126-202.compute-1.amazonaws.com', #'ec2-54-147-126-202.compute-1.amazonaws.com:5432/df785otqidoemm', 
+#         'PORT': 5432, # 8000 is default
+#     }
+# }
+
+# load database from the DATABASE_URL environment variable
+# DATABASES = {}
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 # Password validation
@@ -119,3 +149,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# django_heroku.settings(locals())
